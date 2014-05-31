@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
  
  <title>Ashukang</title>
- <link href="http://username.github.io/" rel="self"/>
- <link href="http://username.github.io"/>
- <updated>2014-05-31T10:45:13+08:00</updated>
- <id>http://username.github.io</id>
+ <link href="http://ashukang.github.io/" rel="self"/>
+ <link href="http://ashukang.github.io"/>
+ <updated>2014-05-31T18:05:46+08:00</updated>
+ <id>http://ashukang.github.io</id>
  <author>
    <name>ashukang</name>
    <email>kangsj9104@gmail.com</email>
@@ -14,12 +14,14 @@
  
  <entry>
    <title>hello github io</title>
-   <link href="http://username.github.io/test/2014/05/31/hello-github-io"/>
+   <link href="http://ashukang.github.io/test/2014/05/31/hello-github-io"/>
    <updated>2014-05-31T00:00:00+08:00</updated>
-   <id>http://username.github.io/test/2014/05/31/hello-github-io</id>
-   <content type="html">&lt;h1 id='hello_github_io'&gt;Hello Github io&lt;/h1&gt;
+   <id>http://ashukang.github.io/test/2014/05/31/hello-github-io</id>
+   <content type="html">
+&lt;h1 id=&quot;hello-github-io&quot;&gt;Hello Github io&lt;/h1&gt;
 
-&lt;h2 id='first_post_in_githubjekyll'&gt;First post in github+jekyll&lt;/h2&gt;</content>
+&lt;h2 id=&quot;first-post-in-githubjekyll&quot;&gt;First post in github+jekyll&lt;/h2&gt;
+</content>
  </entry>
  
  
