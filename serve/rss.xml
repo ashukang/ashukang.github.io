@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+<channel>
+        <title>Ashukang</title>
+        <description>Ashukang - ashukang</description>
+        <link>http://username.github.io</link>
+        <link>http://username.github.io</link>
+        <lastBuildDate>2014-05-31T10:45:13+08:00</lastBuildDate>
+        <pubDate>2014-05-31T10:45:13+08:00</pubDate>
+        <ttl>1800</ttl>
+
+
+        <item>
+                <title>hello github io</title>
+                <description>&lt;h1 id='hello_github_io'&gt;Hello Github io&lt;/h1&gt;
+
+&lt;h2 id='first_post_in_githubjekyll'&gt;First post in github+jekyll&lt;/h2&gt;</description>
+                <link>http://username.github.io/test/2014/05/31/hello-github-io</link>
+                <guid>http://username.github.io/test/2014/05/31/hello-github-io</guid>
+                <pubDate>2014-05-31T00:00:00+08:00</pubDate>
+        </item>
+
+
+</channel>
+</rss>
