@@ -1,11 +1,11 @@
 ---
 layout: page
-title: Hello World!
+title: 学无止境
 tagline: Supporting tagline
 ---
 {% include JB/setup %}
 
-## Sample Posts
+## 小抄
 
 <ul class="posts">
   {% for post in site.posts %}
@@ -13,5 +13,5 @@ tagline: Supporting tagline
   {% endfor %}
 </ul>
 
-## To-Do
+## 待续
 

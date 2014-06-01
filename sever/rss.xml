@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+<channel>
+        <title>一杯清茶，一本书</title>
+        <description>一杯清茶，一本书 - ashukang</description>
+        <link>http://ashukang.github.io</link>
+        <link>http://ashukang.github.io</link>
+        <lastBuildDate>2014-06-01T10:39:43+08:00</lastBuildDate>
+        <pubDate>2014-06-01T10:39:43+08:00</pubDate>
+        <ttl>1800</ttl>
+
+
+        <item>
+                <title>在Github上搭建自己的blog</title>
+                <description>
+&lt;p&gt;一直想着要记下自己的学习过程，但却没有开始动手。其实知道github上边可以做blog也不是一天两天的事情，关键就是有点懒（=。=）。为了更正这一个陋习，将申请ashukang.github.io的过程做个纲要性小结，作为自己的第一篇文章。
+&lt;strong&gt;__&lt;/strong&gt;&lt;strong&gt;__&lt;/strong&gt;&lt;strong&gt;__&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;安装必要的软件，包括git、ruby、gem、jekyll、rake&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code&gt; sudo apt-get install git
+ sudo apt-get install ruby
+ sudo apt-get install gem
+ sudo apt-get install rake
+ sudo apt-get install jekyll
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;申请github帐号，创建一个username.github.io的repository，必须注意的是用于申请github个人主页的username必须和github帐号是同名的，否则github不会自动生成个人主页。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;进入username.github.io的设置页面，配置”Automatic Page Generator”，选择一个主题，然后”PUBLIS”&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;将username.github.io clone到本地，然后预览。&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code&gt; git clone https://github.com/ashukang/ashukang.github.io.git
+ cd ashukang.github.io
+ jekyll sever --server
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;在浏览器中打开 http://localhost:4000&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;使用jekyll-bootstrap框架&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code&gt; cd ..
+ git clone https://github.com/plusjade/jekyll-bootstrap.git
+ cd jekyll-bootstrap
+ rm -rf ./.git/
+ cp -R * ../ashukang.github.io
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;编辑ashukang.github.io/_config.yml&lt;/p&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;打开自动生成，修改Markdown编辑器为官方推荐的版本&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;pre&gt;&lt;code&gt; auto: true
+ markdown: kramdown
+&lt;/code&gt;&lt;/pre&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;修改主页信息&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;pre&gt;&lt;code&gt; title : 一杯清茶，一本书
+ tagline: Site Tagline
+ author :
+   name : ashukang
+     email : kangsj9104@gmail.com
+       github : ashukang
+         #twitter : username
+         #feedburner : feedname
+&lt;/code&gt;&lt;/pre&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;关闭评论（github io不提供动态网站服务，所以评论功能是借助第三方提供，例如Disques。因为这部分内容还有待学习，所以先把这个功能关闭）&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;pre&gt;&lt;code&gt; # Settings for comments helper
+ # Set 'provider' to the comment provider you want to use.
+ # Set 'provider' to false to turn commenting off globally.
+ #
+ comments :
+     provider : false
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;删除根目录下的 index.html，删除 _post 文件夹下的 core-sample 目录&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;编辑 index.md，自定义主页内容&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code&gt;---
+layout: page
+title: 学无止境
+tagline: Supporting tagline
+---
+    
+    
+## 小抄
+    
+&amp;lt;ul class=&quot;posts&quot;&amp;gt;
+        
+        &amp;lt;li&amp;gt;&amp;lt;span&amp;gt;31 May 2014&amp;lt;/span&amp;gt; &amp;amp;raquo; &amp;lt;a href=&quot;/github io/2014/05/31/githubblog&quot;&amp;gt;在Github上搭建自己的blog&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+        
+&amp;lt;/ul&amp;gt;
+    
+## 待续
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;添加文章&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code&gt;rake post title=&quot;Hello World&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;编辑 _post/2014-05-31-helloworld.md，以 Markdown格式编辑博文，例如。&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;pre&gt;&lt;code&gt;---
+layout: post
+title: &quot;Hello World&quot;
+description: &quot;first post&quot;
+category: 'test'
+tags: ['hello', 'jekyll']
+---
+    
+    
+# Hello World
+&lt;/code&gt;&lt;/pre&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;重新运行 jekyll 就可以看到这篇测试文章了&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;将所有变更提交到github上&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code&gt;git add -A .
+git commit -m &quot;first commit&quot;
+git push origin
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+</description>
+                <link>http://ashukang.github.io/github io/2014/05/31/githubblog</link>
+                <guid>http://ashukang.github.io/github io/2014/05/31/githubblog</guid>
+                <pubDate>2014-05-31T00:00:00+08:00</pubDate>
+        </item>
+
+
+</channel>
+</rss>
