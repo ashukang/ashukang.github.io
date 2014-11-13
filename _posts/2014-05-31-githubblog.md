@@ -2,7 +2,7 @@
 layout: post
 title: "在Github上搭建自己的blog"
 description: "一直想着要记下自己的学习过程，但却没有开始动手。其实知道github上边可以做blog也不是一天两天的事情，关键就是有点懒（=。=）。为了更正这一个陋习，将申请ashukang.github.io的过程做个纲要性小结，作为自己的第一篇文章。"
-category: "github io" 
+category: "other" 
 tags: ["github io", "jekyll"]
 ---
 {% include JB/setup %}

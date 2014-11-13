@@ -1,12 +1,14 @@
 
-http://ashukang.github.io/categories.html
-http://ashukang.github.io/sitemap.txt
-http://ashukang.github.io/index.html
-http://ashukang.github.io/atom.xml
+http://ashukang.github.io/index.md.bak2
 http://ashukang.github.io/pages.html
 http://ashukang.github.io/tags.html
-http://ashukang.github.io/index.md.bak
-http://ashukang.github.io/archive.html
 http://ashukang.github.io/rss.xml
+http://ashukang.github.io/index.html
+http://ashukang.github.io/index.md.bak
+http://ashukang.github.io/atom.xml
+http://ashukang.github.io/archive.html
+http://ashukang.github.io/sitemap.txt
+http://ashukang.github.io/categories.html
 
-http://ashukang.github.io/test/2014/05/31/hello-github-io
+http://ashukang.github.io/other/2014/06/25/chrome
+http://ashukang.github.io/other/2014/05/31/githubblog

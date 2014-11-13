@@ -65,8 +65,8 @@ hr {
 sup { line-height: 1ex; }
 
 #site {
-	max-width: 46em;
-	margin: 1.5em auto 3em auto;
+	max-width: 58em;
+	margin: 1.5em auto 6em auto;
 	line-height:1.5em;
 }
 
@@ -84,7 +84,7 @@ sup { line-height: 1ex; }
 	-moz-box-shadow: 2px 2px 8px #aaa;	
 }
 
-#disqus_thread { padding-top: 0; }
+#disqus_thread { padding-top: 0.8em; }
 
 /* TODO
 #page { counter-reset: section; }
@@ -204,7 +204,7 @@ ul.compact li a {
 	font-variant: small-caps;
 	line-height: 1em;
 	margin-top: .5em;
-	margin-bottom: 0;
+	margin-bottom: 0.8em;
 }
 #header h1 {
 	font-family: Palatino, georgia, "times new roman", serif;
@@ -510,6 +510,7 @@ img.maruku-png { }
 /* .prev-next */
 .prev-next {
 	position:relative;
+	padding-bottom:1.2em;
 }
 .prev-next .next{ 
 	float:right;
