@@ -1,24 +1,671 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0">
 <channel>
-        <title>Ashukang</title>
-        <description>Ashukang - ashukang</description>
+        <title>一杯清茶，一本书</title>
+        <description>一杯清茶，一本书 - ashukang</description>
         <link>http://ashukang.github.io</link>
         <link>http://ashukang.github.io</link>
-        <lastBuildDate>2014-05-31T18:09:51+08:00</lastBuildDate>
-        <pubDate>2014-05-31T18:09:51+08:00</pubDate>
+        <lastBuildDate>2014-11-16T01:43:32+08:00</lastBuildDate>
+        <pubDate>2014-11-16T01:43:32+08:00</pubDate>
         <ttl>1800</ttl>
 
 
         <item>
-                <title>hello github io</title>
+                <title>Arduino+超声波测距做控制器</title>
                 <description>
-&lt;h1 id=&quot;hello-github-io&quot;&gt;Hello Github io&lt;/h1&gt;
+&lt;p&gt;Arduino是非常容易上手的电子积木，一个小巧的控制核心再加上一些功能拓展模块，就可以做出一个个有趣的玩意儿。今天想分享的是超声波距离传感器的应用，利用超声波距离传感器可以测量出障碍物的距离，利用这一个特性，我们可以通过距离差来识别拍手的手势，从而做到识别拍手这个动作，让这个组合实现一个控制器的功能。&lt;/p&gt;
 
-&lt;h2 id=&quot;first-post-in-githubjekyll&quot;&gt;First post in github+jekyll&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;项目的源代码&lt;a href=&quot;https://github.com/ashukang/arduino-demo/tree/master/HC_SR04_2&quot;&gt; github &lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;示意视频&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div align=&quot;center&quot;&gt;&lt;embed src=&quot;http://player.youku.com/player.php/sid/XODI3MzY2MzU2/v.swf&quot; allowfullscreen=&quot;true&quot; quality=&quot;high&quot; width=&quot;480&quot; height=&quot;400&quot; align=&quot;middle&quot; allowscriptaccess=&quot;always&quot; type=&quot;application/x-shockwave-flash&quot; /&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;实验器材&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Arduino nano + 拓展板&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div align=&quot;center&quot;&gt;&lt;img src=&quot;http://i2.tietuku.com/61a359d85efab6d2.jpg&quot; alpngt=&quot;Arduino nano&quot; /&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;HC-SR04 超声波传感器&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div align=&quot;center&quot;&gt;&lt;img src=&quot;http://i2.tietuku.com/97fad545c014e502.jpg&quot; alpngt=&quot;HC-SR04&quot; /&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;面包板 + 杜邦线&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div align=&quot;center&quot;&gt;&lt;img src=&quot;http://i2.tietuku.com/33cee384cdc39e28.jpg&quot; alpngt=&quot;面包板&quot; /&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;实现超声波测距&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;下载 &lt;a href=&quot;http://code.google.com/p/arduino-new-ping&quot;&gt; NewPing &lt;/a&gt; 库，并安装到 Arduino 的插件中。&lt;/li&gt;
+  &lt;li&gt;新建 Arduino 项目。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;写入示例代码。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;NewPing.h&amp;gt;
+
+#define TRIGGER_PIN  	2
+#define ECHO_PIN     	3
+#define MAX_DISTANCE 	200
+#define DELAY_TIME 	50
+
+NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
+
+int uS;
+int curCM;
+
+void setup() {
+  		Serial.begin(115200);
+	curCM = 0;
+  		uS = 0;
+}
+
+void loop() {
+  		delay(DELAY_TIME);
+  		uS = sonar.ping();
+  		curCM = uS / US_ROUNDTRIP_CM;
+		Serial.print(&quot;Ping: &quot;);
+		Serial.print(curCM);
+		Serial.println(&quot; cm&quot;);
+  	}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;将 Arduino nano 和 HC-SR04 超声波传感器相连。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;VCC接5v，GND相接，根据示例代码的配置，将Trig接D2，将Echo接D3，实际上Trig与Echo不一定都要接到D2、D3处，只要和代码写定的阵脚对应即可。为了方便操作我使用面包板来连接，并找来个简单的支架固定面包板，确保超声波传感器的正面朝上，这样更加方便测试。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div align=&quot;center&quot;&gt;&lt;img src=&quot;http://i2.tietuku.com/a4ba73586f2c103b.jpg&quot; alpngt=&quot;连线&quot; /&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;将 Arduino nano 接到 PC，然后将示例代码编译上传到 Arduino nano 板上，就可以看到有实际的距离打印出来了，可以将手掌盖着超声波传感器上方，并改变上下的位置，观察距离测量值的变化。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;实现拍手识别&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;找到拍手引起距离变化的规律&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;以正常的拍手动作，在超声波传感器上方以一定的频率执行，这样更加容易找到想要的判断条件。为了更好的处理数据，可以修改下 loop() 方法，输出纯数据的原始值。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;void loop() {
+  		delay(DELAY_TIME);
+  		uS = sonar.ping();
+  		curCM = uS / US_ROUNDTRIP_CM;
+		Serial.println(curCM);
+  	}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;操作10次后，将原始数据拷贝到 Excel 中，然后做成一个图表，图表能帮助我们快速地在一堆数据中找到规律。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div align=&quot;center&quot;&gt;&lt;img src=&quot;http://i2.tietuku.com/d0819f005dfca53c.png&quot; alpngt=&quot;拟合&quot; /&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;适当调整显示比例以及刻度值，可以发现有很多明显的波谷，很显然这些波谷对应的时刻，正是拍手时手掌处于最低处的时刻，观察到红色箭头的位置，基本上所有波谷开始的时候都是会穿过这条线，因此可以得到一个粗略的判断条件，就是如果两次距离测量值的连线是穿过10cm的，则认为执行了一次拍手操作。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;include &amp;lt;NewPing.h&amp;gt;
+
+#define TRIGGER_PIN  		2
+#define ECHO_PIN     		3
+#define MAX_DISTANCE 		200
+#define DELAY_TIME 		50
+#define THRESHOLD_DISTANCE 	10
+
+NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
+
+int uS;
+int curCM;
+int lastCM;
+int hitCount;
+
+void setup() {
+  		Serial.begin(115200);
+  		// init
+  		curCM = 0;
+  		lastCM = 0;
+	hitCount = 0;
+  		uS = 0;
+}
+
+void loop() {
+  		delay(DELAY_TIME);
+  		uS = sonar.ping();
+  		curCM = uS / US_ROUNDTRIP_CM;
+  		if (lastCM &amp;gt; THRESHOLD_DISTANCE  
+			&amp;amp;&amp;amp; curCM &amp;gt; 0 &amp;amp;&amp;amp; curCM &amp;lt;= THRESHOLD_DISTANCE) {
+			hitCount++;
+			Serial.print(&quot;Ping: &quot;);
+			Serial.print(curCM);
+			Serial.print(&quot; cm, hit &quot;);
+			Serial.println(hitCount);
+  		}
+  		Serial.println(curCM);
+  		lastCM = curCM;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;重新编译上传控制程序，可以发现确实能识别拍手的手势，但是却存在一个问题，就是能看到明显地发现在一个拍手的过程中出现了两次触发动作。因为我们很难保证每次拍手时都能落在有效的区域内，同时每次拍手的频率固定。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div align=&quot;center&quot;&gt;&lt;img src=&quot;http://i2.tietuku.com/737cef381dc47f74.png&quot; alpngt=&quot;拟合&quot; /&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;所以这种单一的判断条件不能很好的满足要求，我们假设以正常的速度拍手，既不会出现特别高的频率，那么就可以限定一个有效的时间阈值，在这个时间阈值内如果出现多次的拍手识别，就当作是误判，只算一次。这里假定这个时间阈值为200ms。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;include &amp;lt;NewPing.h&amp;gt;
+
+#define TRIGGER_PIN  		2
+#define ECHO_PIN     		3
+#define MAX_DISTANCE 		200
+#define DELAY_TIME 		50
+#define THRESHOLD_DISTANCE 	10
+#define VALID_TIME_INTERVAL 	200/DELAY_TIME
+
+NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
+
+int uS;
+int curCM;
+int lastCM;
+int hitCount;
+int lastHitStamp;
+
+void setup() {
+  		Serial.begin(115200);
+  		// init
+  		curCM = 0;
+  		lastCM = 0;
+  		hitCount = 0;
+  		lastHitStamp = 0;
+  		uS = 0;
+}
+
+void loop() {
+  		delay(DELAY_TIME);
+  		lastHitStamp++;
+  		uS = sonar.ping();
+  		curCM = uS / US_ROUNDTRIP_CM;
+  		if (lastCM &amp;gt; THRESHOLD_DISTANCE  
+			&amp;amp;&amp;amp; curCM &amp;gt; 0 &amp;amp;&amp;amp; curCM &amp;lt;= THRESHOLD_DISTANCE 
+			&amp;amp;&amp;amp; lastHitStamp &amp;gt;= VALID_TIME_INTERVAL) { 
+
+			hitCount++;
+			lastHitStamp = 0;
+			Serial.print(&quot;Ping: &quot;);
+			Serial.print(curCM);
+			Serial.print(&quot; cm, hit &quot;);
+			Serial.println(hitCount);
+  		}
+  		Serial.println(curCM);
+  		lastCM = curCM;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;现在已经没有出现误报的情况了，但是还有一个问题，如果现在将手掌处于10cm处，既处于位置阈值的地发，那么稍稍地上下移动也是会被识别为拍手，这个与我们的预期有点出入，我们希望能有一个上下挥动的动作，出现这个问题的根源是因为我们的这个判断条件太过简单了，并没有考虑到两个测量位置之间的斜率，很明显需要有一个较大的倾斜斜率才能体现出上下挥动的动作。假定两个测量位置之间的时间差是单位时间，既两个测量位置之间的斜率可以转换为两个测量位置之间的差值。假定两个测量位置之间的差值必须大于2cm。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;#define VALID_DISTANCE 2
+
+void loop() {
+  		delay(DELAY_TIME);
+  		lastHitStamp++;
+  		uS = sonar.ping();
+  		curCM = uS / US_ROUNDTRIP_CM;
+  		if (lastCM &amp;gt; THRESHOLD_DISTANCE  
+			&amp;amp;&amp;amp; curCM &amp;gt; 0 &amp;amp;&amp;amp; curCM &amp;lt;= THRESHOLD_DISTANCE 
+			&amp;amp;&amp;amp; lastHitStamp &amp;gt;= VALID_TIME_INTERVAL
+			&amp;amp;&amp;amp; (lastCM - curCM) &amp;gt;= VALID_DISTANCE) {
+
+			hitCount++;
+			lastHitStamp = 0;
+			Serial.print(&quot;Ping: &quot;);
+			Serial.print(curCM);
+			Serial.print(&quot; cm, hit &quot;);
+			Serial.println(hitCount);
+  		}
+  		Serial.println(curCM);
+  		lastCM = curCM;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;现在的判断条件基本满足要求，但是再加快一下拍手的速度，会发现有些动作是会被漏识别的。为什么会出现这种情况呢？回看我们一开始模拟出来的测量位置连线图，实际上我们得到的只是一些点，既位置，而那些连线是我们为了方便判断，虚拟出来的，用离散的数值来模拟连续的过程，是计算机中惯用的伎俩。很明显，如果连续过程变化得很快，但是离散化采样的时间间隔又非常的长，那么势必会丢掉部分的信息，将一些细节丢失了。就目前我们使用的实验器材来看，离散化的处理方式我们是无法更改的，但是采样率是可以调整，可以通过提高采样率来保留更多的信息，很明显的是这个采样率的提高幅度不会是无限的，否则这个过程又会被抽象成来一个连续的。所以在使用这个控制器时，也是需要人为的限定下拍手时上下挥动的速度，以保证是在此控制器的量程范围内。将采样率提高为原来的两倍，基本满足稍快手速的要求。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;#define DELAY_TIME 25
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;到此，就实现了一个利用 Arduino nano 和超声波传感器来识别上下挥手动作的控制器，每当上下挥动一次手掌时，会发出一个识别的事件。当然这只是一个非常基础的模型，其识别条件也不是最完美的，但是相信我们已经为下一步好好利用它打下了基础，或许能做出来更加有趣的东西。&lt;/p&gt;
+&lt;/blockquote&gt;
+
 </description>
-                <link>http://ashukang.github.io/test/2014/05/31/hello-github-io</link>
-                <guid>http://ashukang.github.io/test/2014/05/31/hello-github-io</guid>
+                <link>http://ashukang.github.io/smart/2014/11/15/arduino</link>
+                <guid>http://ashukang.github.io/smart/2014/11/15/arduino</guid>
+                <pubDate>2014-11-15T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>从小需求开始学Chrome插件开发</title>
+                <description>
+&lt;p&gt;浏览网页还算是比较舒心的事情，但我就遇到了一件比较尴尬的事情。都说人有三急，本人就是在浏览谋篇长博文时，突然想蹲坑（=。=），于是想着如果这个时候能在手机上快速打开这个网页，那么就能解决说因为上洗手间而暂时放弃阅读的问题。脑海里一闪而过的念头就是将网页链接生成为一张二维码，然后手机上一扫不就可以做到快速跨设备复制了吗？本来这种简单的需求肯定Chrome应用市场上会有大把，但是本着一颗好奇的心，还是学学该怎么做一个Chrome插件。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;项目的源代码&lt;a href=&quot;https://github.com/ashukang/chrome_plugin_url_qrcode&quot;&gt; github &lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;项目打包后的&lt;a href=&quot;https://chrome.google.com/webstore/detail/url-qrcode/oaigjaelpcceejpejjancanmjahagikm&quot;&gt; Chrome 插件&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;js-&quot;&gt;用 JS 来生成二维码图片&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;查找&lt;a href=&quot;http://hi.baidu.com/277280289/item/a2ca9e989806c4de1a49dfe3&quot;&gt;资料&lt;/a&gt;，使用一个开源的第三方库 &lt;a href=&quot;https://github.com/jeromeetienne/jquery-qrcode&quot;&gt;jquery-qrcode&lt;/a&gt;，可以方便的生成二维码。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;以下代码是参照原作者的代码，并且做了点视觉上的小调整。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;html&amp;gt;
+&amp;lt;head&amp;gt;
+&amp;lt;title&amp;gt;JS生成二维码&amp;lt;/title&amp;gt;
+&amp;lt;script src=&quot;http://code.jquery.com/jquery-1.10.1.min.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script type=&quot;text/javascript&quot; src=&quot;jquery.qrcode.min.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+&amp;lt;div id=&quot;output&quot;&amp;gt;&amp;lt;/div&amp;gt;
+&amp;lt;script&amp;gt;
+jQuery(function(){
+	$('#output').qrcode({
+		width: 320,
+		height: 320,
+		render: &quot;canvas&quot;, //设置渲染方式 table canvas
+		text: utf16to8(&quot;你好，QRcode&quot;),
+		background      : &quot;#ffffff&quot;,//背景颜色 
+		foreground      : &quot;#000000&quot; //前景颜色 
+	});
+})
+ 
+
+// by loveboy
+function utf16to8(str) { 
+	var out, i, len, c; 
+	out = &quot;&quot;; 
+	len = str.length; 
+	for(i = 0; i &amp;lt; len; i++) { 
+	c = str.charCodeAt(i); 
+	if ((c &amp;gt;= 0x0001) &amp;amp;&amp;amp; (c &amp;lt;= 0x007F)) { 
+		out += str.charAt(i); 
+	} else if (c &amp;gt; 0x07FF) { 
+		out += String.fromCharCode(0xE0 | ((c &amp;gt;&amp;gt; 12) &amp;amp; 0x0F)); 
+		out += String.fromCharCode(0x80 | ((c &amp;gt;&amp;gt;  6) &amp;amp; 0x3F)); 
+		out += String.fromCharCode(0x80 | ((c &amp;gt;&amp;gt;  0) &amp;amp; 0x3F)); 
+	} else { 
+		out += String.fromCharCode(0xC0 | ((c &amp;gt;&amp;gt;  6) &amp;amp; 0x1F)); 
+		out += String.fromCharCode(0x80 | ((c &amp;gt;&amp;gt;  0) &amp;amp; 0x3F)); 
+	} 
+	} 
+	return out; 
+} 
+&amp;lt;/script&amp;gt;
+ 
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;由于 jquery-qrcode 库是utf8格式，所以不支持中文(utf16编码)，感谢原作者提供的解决方案，可以先将中文的utf16编码转换为utf8编码，再通过 jquery-qrcode 库生成二维码。将上边的测速代码保存为一个html文件，再浏览器中打开就可以看到效果。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div align=&quot;center&quot;&gt;&lt;img src=&quot;http://i1277.photobucket.com/albums/y499/ashukang/4E8C7EF478016F14793A622A56FE1_zpsf7b061af.png&quot; alt=&quot;测试二维码&quot; /&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;chrome-&quot;&gt;Chrome 插件的开发流程&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Chrome 插件开发需要一个入口文件 manifest.json ,它定义了整个插件的名字、描述、权限，以及所要展示的 html 页面与脚本代码。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;需要注意的是Chrome对html页面的有一定的限制，基本上直接写在html页面内的js代码都是不被执行的，需要写成独立的js代码，在html页面中引入。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;manifest.json 的格式，以及定义都比较简单，我是参照&lt;a href=&quot;http://www.cnblogs.com/bdstjk/p/3180925.html&quot;&gt;这里&lt;/a&gt;来学习demo的。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;chrome--1&quot;&gt;整合到 Chrome 插件中&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;下载 &lt;a href=&quot;http://jquery.com/download/&quot;&gt;jquery&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;将生成二维码的 js 代码抽离到 popup.js&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;创建 popup.html 文件用于显示二维码&lt;/p&gt;
+
+    &lt;html&gt;
+ &lt;head&gt;
+ &lt;title&gt;Qrcode Creator&lt;/title&gt;
+ &lt;script type=&quot;text/javascript&quot; src=&quot;jquery-1.11.1.min.js&quot;&gt;&lt;/script&gt;
+ &lt;script type=&quot;text/javascript&quot; src=&quot;jquery.qrcode.min.js&quot;&gt;&lt;/script&gt;
+ &lt;script type=&quot;text/javascript&quot; src=&quot;popup.js&quot;&gt;&lt;/script&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+ 	&lt;div id=&quot;output&quot;&gt;&lt;/div&gt;
+ &lt;/body&gt;
+ &lt;/html&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;由于将生成二维码的代码抽离到了popup.js脚本中，所以需要有一个时机让网页可以调用这个方法。很明显，我们可以选择在popup.html加载完之后让生成二维码的方法被执行。因为popup.html非常简单只是做为二维码图片的显示页面，所以DOMContentLoaded事件比较适合（请参考&lt;a href=&quot;http://www.cnblogs.com/hh54188/archive/2013/03/01/2939426.html&quot;&gt;这里&lt;/a&gt;），当DOMContentLoaded事件触发时，仅当DOM加载完成，不包括样式表，图片，flash。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;将监听加到 popup.js 中。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;function init() {
+	jQuery(function(){
+		$('#output').qrcode({
+			width:320,
+			height:320,
+			render:&quot;canvas&quot;,
+			text:utf16to8(&quot;网页链接&quot;),
+			background:&quot;#ffffff&quot;,
+			foreground:&quot;#000000&quot;
+		});
+		}
+	);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  init();
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;这里又出现了另外一个问题，如果获取到当前tab的url？&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;其实Chrome已经为什么提供了相关的api，参考&lt;a href=&quot;http://open.chrome.360.cn/html/dev_tabs.html&quot;&gt;这里&lt;/a&gt;。&lt;/p&gt;
+
+  &lt;p&gt;可以使用 &lt;code&gt;chrome.tabs.getSelected(integer windowId, function callback)&lt;/code&gt; 这个接口来获取当前页面的url。
+因为它的异步的方法，可以稍微修改的因为它的异步的方法，可以稍微修改的 popup.js 的内容，最终popup.js的内容如下。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;function utf16to8(str){
+	var out, i, len, c;
+	out=&quot;&quot;;
+	len=str.length;
+	for(i=0; i&amp;lt;len; i++){
+		c=str.charCodeAt(i);
+		if((c&amp;gt;=0x0001)&amp;amp;&amp;amp;(c&amp;lt;=0x007f)){
+			out+=str.charAt(i);
+		}else if(c&amp;gt;0x07ff){
+			out+=String.fromCharCode(0xe0 | ((c&amp;gt;&amp;gt;12)&amp;amp;0x0f));
+			out+=String.fromCharCode(0x80 | ((c&amp;gt;&amp;gt;6)&amp;amp;0x3f));
+			out+=String.fromCharCode(0x80 | ((c&amp;gt;&amp;gt;0)&amp;amp;0x3f));
+		}else{
+			out+=String.fromCharCode(0xc0 | ((c&amp;gt;&amp;gt;6)&amp;amp;0x1f));
+			out+=String.fromCharCode(0x80 | ((c&amp;gt;&amp;gt;0)&amp;amp;0x3f));
+		}
+	}
+	return out;
+}
+
+function getUrlID(tab) {
+	//alert(tab.url);
+	jQuery(function(){
+		$('#output').qrcode({
+			width:320,
+			height:320,
+			render:&quot;canvas&quot;,
+			text:utf16to8(tab.url),
+			background:&quot;#ffffff&quot;,
+			foreground:&quot;#000000&quot;
+		});
+		}
+	);
+}
+
+function init() {
+	chrome.tabs.getSelected(null,getUrlID);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  init();
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;编写 manifest.json ，为插件命名，创建icon，同时去除不必要的权限。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;因为我们只需要访问到网页的地址，所以权限部分只需要一个 ‘tags’ 就可以了。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;{  
+  	&quot;name&quot;: &quot;Url QRcode&quot;,
+  	&quot;manifest_version&quot;:2,
+	&quot;version&quot;: &quot;1.1&quot;,  
+	&quot;description&quot;: &quot;将网页链接生成二维码&quot;,  
+	&quot;icons&quot;:{&quot;48&quot;:&quot;icon_48.png&quot;,&quot;128&quot;:&quot;icon_128.png&quot;},
+	&quot;browser_action&quot;: {  
+		&quot;default_icon&quot;: {
+               &quot;19&quot;: &quot;icon_19.png&quot;,
+               &quot;38&quot;: &quot;icon_38.png&quot;
+          },
+		&quot;default_title&quot;: &quot;Url Qrcode&quot;,
+		&quot;default_popup&quot;: &quot;popup.html&quot;
+	 },
+  	&quot;permissions&quot;: [&quot;tabs&quot;] 
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;在Chrome插件管理页面，以开发者模式加载刚刚编辑完的插件，就可以看到运行效果了。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://i1277.photobucket.com/albums/y499/ashukang/load_zps478d7df6.png&quot; alt=&quot;加载插件&quot; width=&quot;100%&quot; height=&quot;100%&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://i1277.photobucket.com/albums/y499/ashukang/qrcodewelcome_zpsb6fde567.png&quot; alt=&quot;运行效果&quot; width=&quot;100%&quot; height=&quot;100%&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;发布插件&lt;/h2&gt;
+
+&lt;p&gt;Chrome插件开发完成后，就可以发布到Chrome市场内，流程并不复杂，参考&lt;a href=&quot;http://blog.segmentfault.com/phper/1190000000354014&quot;&gt;这里&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;发布到Chrome 网上应用商店需要满足一下3个大点：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;有一个完整的Chrome App项目&lt;/li&gt;
+  &lt;li&gt;有一张信用卡来激活Google Wallet&lt;/li&gt;
+  &lt;li&gt;支付5美元用来启用开发者账户&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;最后&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;本文也只是走马观花式地将自己遇到的一个小需求到最后转化为一个简单的 Chrome 插件的过程记录下来。虽然开发 Chrome 插件的流程并不复杂，但是用到的 Chrome 插件特性还是很少，大部分的 Chrome Api 其实并没有涉及到，以后如果有这方面的需求，再好好的研究吧！&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+                <link>http://ashukang.github.io/other/2014/06/25/chrome</link>
+                <guid>http://ashukang.github.io/other/2014/06/25/chrome</guid>
+                <pubDate>2014-06-25T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>在Github上搭建自己的blog</title>
+                <description>
+&lt;p&gt;一直想着要记下自己的学习过程，但却没有开始动手。其实知道github上边可以做blog也不是一天两天的事情，关键就是有点懒（=。=）。为了更正这一个陋习，将申请ashukang.github.io的过程做个纲要性小结，作为自己的第一篇文章。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;安装必要的软件，包括 git、ruby、gem、jekyll、rake&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code&gt; sudo apt-get install git
+ sudo apt-get install ruby
+ sudo apt-get install gem
+ sudo apt-get install rake
+ sudo apt-get install jekyll
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;申请 github 帐号，创建一个 username.github.io 的 repository，必须注意的是用于申请 github 个人主页的 username 必须和 github 帐号是同名的，否则 github 不会自动生成个人主页。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;进入 username.github.io 的设置页面，配置 “Automatic Page Generator” ，选择一个主题，然后 “PUBLIS”&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;将 username.github.io clone 到本地，然后预览。&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code&gt; git clone https://github.com/ashukang/ashukang.github.io.git
+ cd ashukang.github.io
+ jekyll sever --server
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;在浏览器中打开 http://localhost:4000&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;使用 jekyll-bootstrap 框架&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code&gt; cd ..
+ git clone https://github.com/plusjade/jekyll-bootstrap.git
+ cd jekyll-bootstrap
+ rm -rf ./.git/
+ cp -R * ../ashukang.github.io
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;编辑 ashukang.github.io/_config.yml&lt;/p&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;打开自动生成，修改 Markdown 编辑器为官方推荐的版本&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;pre&gt;&lt;code&gt; auto: true
+ markdown: kramdown
+&lt;/code&gt;&lt;/pre&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;修改主页信息&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;pre&gt;&lt;code&gt; title : 一杯清茶，一本书
+ tagline: Site Tagline
+ author :
+   name : ashukang
+     email : kangsj9104@gmail.com
+       github : ashukang
+         #twitter : username
+         #feedburner : feedname
+&lt;/code&gt;&lt;/pre&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;关闭评论（github io不提供动态网站服务，所以评论功能是借助第三方提供，例如 Disques。因为这部分内容还有待学习，所以先把这个功能关闭）&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;pre&gt;&lt;code&gt; # Settings for comments helper
+ # Set 'provider' to the comment provider you want to use.
+ # Set 'provider' to false to turn commenting off globally.
+ #
+ comments :
+     provider : false
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;删除根目录下的 index.html，删除 _post 文件夹下的 core-sample 目录&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;编辑 index.md，自定义主页内容&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code&gt;---
+layout: page
+title: 学无止境
+tagline: Supporting tagline
+---
+    
+    
+## 小抄
+    
+&amp;lt;ul class=&quot;posts&quot;&amp;gt;
+        
+        &amp;lt;li&amp;gt;&amp;lt;span&amp;gt;15 Nov 2014&amp;lt;/span&amp;gt; &amp;amp;raquo; &amp;lt;a href=&quot;/smart/2014/11/15/arduino&quot;&amp;gt;Arduino+超声波测距做控制器&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+        
+        &amp;lt;li&amp;gt;&amp;lt;span&amp;gt;25 Jun 2014&amp;lt;/span&amp;gt; &amp;amp;raquo; &amp;lt;a href=&quot;/other/2014/06/25/chrome&quot;&amp;gt;从小需求开始学Chrome插件开发&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+        
+        &amp;lt;li&amp;gt;&amp;lt;span&amp;gt;31 May 2014&amp;lt;/span&amp;gt; &amp;amp;raquo; &amp;lt;a href=&quot;/other/2014/05/31/githubblog&quot;&amp;gt;在Github上搭建自己的blog&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+        
+&amp;lt;/ul&amp;gt;
+    
+## 待续
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;添加文章&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code&gt;rake post title=&quot;Hello World&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;编辑 _post/2014-05-31-helloworld.md，以 Markdown格式编辑博文，例如。&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;pre&gt;&lt;code&gt;---
+layout: post
+title: &quot;Hello World&quot;
+description: &quot;first post&quot;
+category: 'test'
+tags: ['hello', 'jekyll']
+---
+    
+    
+# Hello World
+&lt;/code&gt;&lt;/pre&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;重新运行 jekyll 就可以看到这篇测试文章了&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;将所有变更提交到github上&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code&gt;git add -A .
+git commit -m &quot;first commit&quot;
+git push origin
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+</description>
+                <link>http://ashukang.github.io/other/2014/05/31/githubblog</link>
+                <guid>http://ashukang.github.io/other/2014/05/31/githubblog</guid>
                 <pubDate>2014-05-31T00:00:00+08:00</pubDate>
         </item>
 

@@ -47,6 +47,10 @@
 
 <ul class="posts">
   
+    <li><span>30 Nov 2014</span> &raquo; <a href="/smart/2014/11/30/voice-controller-server">Android声控Cubieboard播放音乐（服务器）</a></li>
+  
+    <li><span>30 Nov 2014</span> &raquo; <a href="/smart/2014/11/30/voice-controller-client">Android声控CubieBoard播放音乐（客户端）</a></li>
+  
     <li><span>15 Nov 2014</span> &raquo; <a href="/smart/2014/11/15/arduino">Arduino+超声波测距做控制器</a></li>
   
     <li><span>25 Jun 2014</span> &raquo; <a href="/other/2014/06/25/chrome">从小需求开始学Chrome插件开发</a></li>

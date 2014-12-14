@@ -1,0 +1,273 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <title>Android声控CubieBoard播放音乐（客户端） &larr; </title>
+   <meta name="author" content="ashukang" />
+
+   <link rel="start" href="/" />
+
+	
+	
+	
+	
+
+   <!-- syntax highlighting CSS -->
+   <link rel="stylesheet" href="/assets/themes/mark-reid/css/syntax.css" type="text/css" />
+
+   <!-- Homepage CSS -->
+   <link rel="stylesheet" href="/assets/themes/mark-reid/css/screen.css" type="text/css" />
+
+</head>
+<body id="">
+<div id="site">
+  
+  <div id="header">
+    <h1>
+    	<a href="/" title="一杯清茶，一本书">一杯清茶，一本书</a>
+    	<span class="byline">&larr; <a href="/">ashukang</a></span>
+    </h1>
+    <ul class="nav">
+      <li><a class="home" href="/">Home</a></li>
+      <li><a  href="/archive.html">Archive</a></li>
+      <li><a  href="/categories.html">Categories</a></li>
+    </ul>
+  </div>
+
+  
+<div id="page">
+	
+  <h1 class="emphnext">Android声控CubieBoard播放音乐（客户端）</h1>
+  <ul class="tag_box inline">
+  
+  
+
+
+  
+     
+    	<li><a href="/tags.html#Android-ref">Android <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#pocketsphinx-ref">pocketsphinx <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#cubieboard-ref">cubieboard <span>2</span></a></li>
+     
+    	<li><a href="/tags.html#语音识别-ref">语音识别 <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#socket-ref">socket <span>2</span></a></li>
+    
+  
+
+
+
+  </ul>
+
+  
+<p>CubieBoard是一块优秀的开发板，小巧节能，能运行Linux系统，一般拿它来做BT下载机，或者小型的服务器，搭载如git、samba等服务。平常都是外接显示器，键鼠操作它，或者直接SSH远程登录。考虑到家里现在都会有的局域网，以及手头开放性强的Android智能手机，可以做一个交互界面更加友好的简单操控器，本文还借助了PocketSphinx库，利用它强大的离线语音识别能力，实现声控的功能，并且以播放音乐为例，讲述整个声控框架所涉及到的主要地方。</p>
+
+<ul>
+  <li>项目源代码<a href="https://github.com/ashukang/ARobot/tree/master/V1.0/Client_Android"> github </a></li>
+  <li>示例视频</li>
+</ul>
+
+<div align="center"><embed src="http://player.youku.com/player.php/sid/XODQ3ODU3OTAw/v.swf" allowfullscreen="true" quality="high" width="480" height="400" align="middle" allowscriptaccess="always" type="application/x-shockwave-flash" /></div>
+
+<h2 id="pocketsphinx">使用PocketSphinx实现离线语音识别</h2>
+
+<ul>
+  <li>下载<a href="http://sourceforge.net/projects/cmusphinx/files/pocketsphinx/5prealpha/"> PocketSphinx Android Demo </a></li>
+</ul>
+
+<blockquote>
+  <p>这里我下载的是PocketSphinx Android Demo的Eclipse项目版本，如果你使用的是Google提供的最新版本ADT Bundle IDE，那可能需要先解决下ant缺失的问题，因为PocketSphinx Android Demo里面有一个ant builder，用来处理语音素材。如果是使用原生Eclipse IDE + ADT Plugin则可以直接导入这个Demo。直接运行这个Demo，根据界面上面的提示，读出指定的英文则可以进行下一步，我测试了下，渣渣的口音都可以识别出来，真心点赞！</p>
+</blockquote>
+
+<ul>
+  <li>尝试修改配置，新增识别项</li>
+</ul>
+
+<blockquote>
+  <p>这个官方的Demo只包含了英文的字典，所以识别的都是英文单词，因为我想要实现的控制器，多以命令的模式表示，所以可以把控制命令简化为如play pause next等简单的口令，就没有选择寻找中文字典，如果想更加接地气，很明显中文语音识别是必须，<a href="http://blog.csdn.net/zouxy09/article/details/7941585"> 这里 </a>有大神小结了相关的知识点。</p>
+</blockquote>
+
+<blockquote>
+  <p>Demo中采用来AsyncTask的方式来加载数据，可以推测这里的IO操作应该非常的繁重，果不其然，所有的与语音识别相关的数据，包括字典、目标词汇等都在Assert文件夹中，数量不少而且个别文件的大小还不小。在加载文件的方法中，可以看出来Demo展示来3种注册目标词汇的方法。</p>
+</blockquote>
+
+<div align="center"><img src="http://i3.tietuku.com/add48a70171d3d4c.png" alpngt="setup recognizer" /></div>
+
+<blockquote>
+  <p>第一种方式是注册单个单词或者短语，甚至是一个句子。如Demo的第一个页面所示，想要触发到这里的识别，需要读准整个短语。</p>
+</blockquote>
+
+<blockquote>
+  <p>第二种方式是注册一个词组，如Demo的第二个页面所示，触发这里的识别，只要读准某一个词就可以了。找到Assert文件夹中对应的词组描述文件：</p>
+</blockquote>
+
+<div align="center"><img src="http://i3.tietuku.com/1ca46cca9745fea6.png" alpngt="digits gram" /></div>
+
+<blockquote>
+  <p>这个词组描述文件有一定的文件格式，可以猜测到gammer后面对应的digits是整个词组文件的KEY，用于注册到PocketSphinx服务中，下面的digit是目标词汇，以竖线分隔，最后以分号表示结束。</p>
+</blockquote>
+
+<blockquote>
+  <p>第三种是带语义的识别？？没有验证到，只看到load到内存中的文件可能是一个类db的文件，所以推测是功能更加强大的语义识别，后续如果需要应用到更加智能的AI，或许需要对这里有所学习。目前看来，仅使用第一、第二种识别方式也是可以的。</p>
+</blockquote>
+
+<blockquote>
+  <p>尝试修改digits文件，在目标词汇中添加如“play”、“pause”、“next”等单词，再次运行Demo，发现确实可以识别到我们新添加的目标词汇，故可以以这种方式添加或者修改目标词汇来满足我们的需求。</p>
+</blockquote>
+
+<ul>
+  <li>学习PocketSphinx的API</li>
+</ul>
+
+<blockquote>
+  <p>回调API</p>
+</blockquote>
+
+<div align="center"><img src="http://i3.tietuku.com/0318809b53dc1855.png" alpngt="callback api" /></div>
+
+<blockquote>
+  <p>onBeginningOfSpeech 是在PocketSphinx开始录音的时候会回调，在这里我们可以在UI上有所展示，比如显示“正在录音”的tips。</p>
+</blockquote>
+
+<blockquote>
+  <p>onEndOfSpeech 是在PocketSphinx结束录音的时候会回调，这与onBeginningOfSpeech是成对出现的，这里可以将“正在录音”的tips去掉，或者展示“正在识别”的tips。</p>
+</blockquote>
+
+<blockquote>
+  <p>onPartialResult 当识别到目标词汇时，PocketSphinx会回调这个接口，并且返回值非空，一定是目标词语，或者是目标词组中的某个。这里可以根据场景判断是发送口令到CubieBoard服务器，还是执行本定操作。</p>
+</blockquote>
+
+<blockquote>
+  <p>onResult 在测试中发现，仅使用上诉第一、第二种方式时，可以忽略这个接口。从Demo上看这个接口会返回空值。</p>
+</blockquote>
+
+<blockquote>
+  <p>注册与反注册回调</p>
+</blockquote>
+
+<pre><code>SpeechRecognizer::addListener(RecognitionListener listener);
+SpeechRecognizer::removeListener(RecognitionListener listener);
+</code></pre>
+
+<blockquote>
+  <p>开始监听与结束监听，这里这里传给PocketSphinx的是目标词汇的KEY，而不是目标词汇本身。</p>
+</blockquote>
+
+<pre><code>SpeechRecognizer::startListening(String key);
+SpeechRecognizer::stop();
+</code></pre>
+
+<blockquote>
+  <p>自此，如何在Android上使用PocketSphinx来识别英文词汇，已经变得非常的明朗，把它整合起来就变成来这个离线语音控制器的一个核心部分。</p>
+</blockquote>
+
+<h2 id="socketcubieboard">使用Socket将识别到的口令发送到Cubieboard服务器上</h2>
+
+<blockquote>
+  <p>Android上对Socket的封装还是非常的简便，这里做以个简单的示例，考虑到是局域网，以及口令的发送可能不会出现特别多，特别频繁的场景，所以每次发送完口令时，都将Socket关闭，当然这里可以根据具体的使用场景再做优化。</p>
+</blockquote>
+
+<div align="center"><img src="http://i3.tietuku.com/921c5a35241548e9.png" alpngt="Android Socket" /></div>
+
+<h2 id="ui">UI整合</h2>
+
+<blockquote>
+  <p>这里考虑使用的便利性，在唤醒控制器的场景使用的即时监听语音的方式，如Demo本身所展示的方式。但是在音乐播放控制页面，在采用了“按住说话”的方式监听的方式，是因为可能此时有音乐在播放，对语音识别有一定的干扰，所以加了个“按住”操作，同时支持正常的按钮操作。运行截图如下，具体代码实现在<a href="https://github.com/ashukang/ARobot/tree/master/V1.0/Client_Android"> 这里 </a>。</p>
+</blockquote>
+
+<ul>
+  <li>启动界面，等待唤醒。</li>
+</ul>
+
+<div align="center"><img src="http://i3.tietuku.com/65db0128e5752134.png" alpngt="UI_1" width="300" /></div>
+
+<ul>
+  <li>唤醒后，等待识别具体的操作。</li>
+</ul>
+
+<div align="center"><img src="http://i3.tietuku.com/40513b7bb4654ff3.png" alpngt="UI_2" width="300" /></div>
+
+<ul>
+  <li>进入音乐播放控制界面。</li>
+</ul>
+
+<div align="center"><img src="http://i3.tietuku.com/31814ef89d477173.png" alpngt="UI_3" width="300" /></div>
+
+
+
+  <address class="signature">
+    <a class="author" href="/">ashukang</a> 
+    <span class="date">30 November 2014</span>
+    <span class="location"></span>
+  </address>
+  
+  <div class="prev-next">
+  
+    <a href="/smart/2014/11/30/voice-controller-server" class="next" title="Android声控Cubieboard播放音乐（服务器）">Next Post &rarr;</a>
+  
+  
+    <a href="/smart/2014/11/15/arduino" class="prev" title="Arduino+超声波测距做控制器">&larr; Earlier Post</a>
+  
+  </div>
+  
+</div><!-- End Page -->
+
+
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'ashublog'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+
+
+  
+  <div id="footer">
+  	<address>
+  		<span class="copyright">
+  			Content by <a href="/info/site.html">ashukang</a>. Design by 
+  			<a href="http://mark.reid.name/">Mark Reid</a>
+  			<br/>
+  			(<a rel="licence" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Some rights reserved</a>)			
+  		</span>
+  		<span class="engine">
+  			Powered by <a href="http://github.com/mojombo/jekyll/" title="A static, minimalist CMS">Jekyll</a>
+  		</span>
+  	</address>
+  </div>
+  
+</div>
+
+<!--[if IE 6]>
+<script type="text/javascript"> 
+	/*Load jQuery if not already loaded*/ if(typeof jQuery == 'undefined'){ document.write("<script type=\"text/javascript\"   src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js\"></"+"script>"); var __noconflict = true; } 
+	var IE6UPDATE_OPTIONS = {
+		icons_path: "http://static.ie6update.com/hosted/ie6update/images/"
+	}
+</script>
+<script type="text/javascript" src="http://static.ie6update.com/hosted/ie6update/ie6update.js"></script>
+<![endif]-->
+
+  
+</body>
+</html>
+

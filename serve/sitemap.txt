@@ -10,6 +10,8 @@ http://ashukang.github.io/archive.html
 http://ashukang.github.io/sitemap.txt
 http://ashukang.github.io/categories.html
 
+http://ashukang.github.io/smart/2014/11/30/voice-controller-server
+http://ashukang.github.io/smart/2014/11/30/voice-controller-client
 http://ashukang.github.io/smart/2014/11/15/arduino
 http://ashukang.github.io/other/2014/06/25/chrome
 http://ashukang.github.io/other/2014/05/31/githubblog
